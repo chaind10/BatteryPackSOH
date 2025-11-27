@@ -36,6 +36,9 @@ print(f"Mean Squared Error: {MSE}")
 print(f"Mean Absolute Error: {MAE}")
 
 #0.6 threshold
-threshold = input("What is the threshold:") or 0.6
-if (predictions >= threshold):
-    print("The battery is healthy.")
+threshold = float(input("What is the threshold: ") or 0.6)
+for pred in predictions:
+    if pred >= threshold:
+        print(f"Predicted SOH = {pred:.3f}, The battery is healthy")
+    else:
+        print(f"Predicted SOH = {pred:.3f}, The battery is not healthy")
