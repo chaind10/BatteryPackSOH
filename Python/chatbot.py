@@ -4,7 +4,7 @@ import google.generativeai as genai
 import os
 
 # Configure Gemini API
-genai.configure(api_key="")
+genai.configure(api_key="AIzaSyBk5Zlkbt7TSkkorD6Zgg-XcyhiZEV4pVQ")
 model = genai.GenerativeModel("gemini-2.5-flash")
 
 prompt = """

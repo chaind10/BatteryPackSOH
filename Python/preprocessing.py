@@ -6,7 +6,7 @@ file_path = r'PulseBat Dataset.xlsx'
 dataset = pd.read_excel(file_path, sheet_name='SOC ALL')
 
 # Drop unnecessary columns
-dataset.drop(columns=['Mat', 'No.', 'ID', 'Qn', 'SOC', 'Pt'], inplace=True)
+dataset.drop(columns=['Mat', 'No.', 'ID', 'Qn', 'Pt'], inplace=True)
 
 # Remove missing values
 dataset.dropna(inplace=True)

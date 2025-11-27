@@ -8,7 +8,13 @@ import preprocessing as pp
 
 #extracting columns (u1-u21) for cell voltages and 'SOH' for state of health
 u_cols = [f'U{i}' for i in range(1, 22)]
-x_data = pp.dataset[u_cols + ['SOE']].values
+
+#x_data = pp.sortedBySOC[u_cols + ['SOE']].values
+#TESTING FOR R2 WITH SOC SORTING ^
+#x_data = pp.sortedByQ[u_cols + ['Q']].values
+#TESTING FOR R2 WITH Q SORTING ^
+
+x_data = pp.dataset[u_cols + ['SOE']].values 
 y_data = pp.dataset['SOH'].values
 
 #x_train and y_train are arrays used to train the model
