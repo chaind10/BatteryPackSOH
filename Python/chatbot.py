@@ -80,9 +80,6 @@ def main():
             answer = aiChatBot(user_input)
             print("Chatbot:", answer)
 
-        
-
-
 
 if __name__ == "__main__":
     main()
