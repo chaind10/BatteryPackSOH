@@ -4,7 +4,7 @@ import google.generativeai as genai
 import os
 
 # Configure Gemini API
-genai.configure(api_key="key goes here")
+genai.configure(api_key="")
 model = genai.GenerativeModel("gemini-2.5-flash")
 
 prompt = """
@@ -42,29 +42,21 @@ def main():
     print("=== Battery SOH Chatbot ===")
     print("Your linear regression model has been trained in linearReg.py.\n")
     print("You can type:")
-    print(" - 'check battery soh'  predicts SOH for a random sample")
-    print(" - 'set threshold'  change the SOH threshold (default 0.6)")
-    print(" - any general battery question  answered by Gemini")
-    print(" - 'quit'  exit\n")
+    print(" - [type: 1] to check battery soh predicts SOH for a random sample")
+    print(" - [type: 2] to set threshold change the SOH threshold (default 0.6)")
+    print(" - any general battery related question")
+    print(" - 'quit or exit' to close")
 
     threshold = 0.6  # default threshold
 
     while True:
         user_input = input("You: ").strip().lower()
 
-        if user_input in ["quit", "exit"]:
+        if user_input in ["quit", "exit", "clear"]:
             print("Chatbot: Goodbye!")
             break
 
-        elif user_input == "set threshold":
-            try:
-                new_th = float(input("Enter new threshold (#.#): "))
-                threshold = new_th
-                print(f"Chatbot: Threshold updated to {threshold:.2f}.")
-            except ValueError:
-                print("Chatbot: That wasn't a valid number. Threshold unchanged.")
-
-        elif "check" in user_input and "soh" in user_input:
+        elif user_input == "1":
             X_test = lr.X_test
             idx = np.random.randint(0, X_test.shape[0])
             sample = X_test[idx:idx+1]
@@ -75,10 +67,21 @@ def main():
             print(f"Chatbot: Predicted SOH = {pred_soh:.3f}")
             print(f"Chatbot: {status}")
 
+        elif user_input == "2":
+            try:
+                new_th = float(input("Enter new threshold (#.#): "))
+                threshold = new_th
+                print(f"Chatbot: Threshold updated to {threshold:.2f}.")
+            except ValueError:
+                print("Chatbot: That wasn't a valid number. Threshold unchanged.")
+
         else:
-            # Any other question → answered by Gemini
+            #other questions answered by Gemini
             answer = aiChatBot(user_input)
             print("Chatbot:", answer)
+
+        
+
 
 
 if __name__ == "__main__":
