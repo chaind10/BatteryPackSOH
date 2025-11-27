@@ -4,10 +4,15 @@ import google.generativeai as genai
 import os
 
 # Configure Gemini API
-genai.configure(api_key="key goes here removed for project")
-# or: genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+genai.configure(api_key="key goes here")
+model = genai.GenerativeModel("gemini-2.5-flash")
 
-model = genai.GenerativeModel("gemini-1.5-flash")
+prompt = """
+Reply to questions related to the topic of batterys, if the question asked or statment made is not related to batterys reply by saying
+Please ask questions related to batterys
+
+Text: {answer to question}
+"""
 
 def classify_soh(soh_value: float, threshold: float = 0.6) -> str:
     if soh_value >= threshold:
@@ -37,10 +42,10 @@ def main():
     print("=== Battery SOH Chatbot ===")
     print("Your linear regression model has been trained in linearReg.py.\n")
     print("You can type:")
-    print(" - 'check battery soh' → predicts SOH for a random sample")
-    print(" - 'set threshold' → change the SOH threshold (default 0.6)")
-    print(" - any general battery question → answered by Gemini")
-    print(" - 'quit' → exit\n")
+    print(" - 'check battery soh'  predicts SOH for a random sample")
+    print(" - 'set threshold'  change the SOH threshold (default 0.6)")
+    print(" - any general battery question  answered by Gemini")
+    print(" - 'quit'  exit\n")
 
     threshold = 0.6  # default threshold
 
@@ -53,7 +58,7 @@ def main():
 
         elif user_input == "set threshold":
             try:
-                new_th = float(input("Enter new threshold (e.g., 0.6): "))
+                new_th = float(input("Enter new threshold (#.#): "))
                 threshold = new_th
                 print(f"Chatbot: Threshold updated to {threshold:.2f}.")
             except ValueError:
@@ -74,3 +79,7 @@ def main():
             # Any other question → answered by Gemini
             answer = aiChatBot(user_input)
             print("Chatbot:", answer)
+
+
+if __name__ == "__main__":
+    main()
