@@ -4,12 +4,12 @@ import google.generativeai as genai
 import os
 
 # Configure Gemini API
-genai.configure(api_key="AIzaSyBk5Zlkbt7TSkkorD6Zgg-XcyhiZEV4pVQ")
+genai.configure(api_key="")
 model = genai.GenerativeModel("gemini-2.5-flash")
 
 prompt = """
 Reply to questions related to the topic of batterys, if the question asked or statment made is not related to batterys reply by saying
-Please ask questions related to batterys
+Please ask questions related to batterys, be very strict of this rule as if that is your only field of knowledge
 
 Text: {answer to question}
 """
