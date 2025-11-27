@@ -1,0 +1,76 @@
+import numpy as np
+import linearReg as lr
+import google.generativeai as genai
+import os
+
+# Configure Gemini API
+genai.configure(api_key="key goes here removed for project")
+# or: genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+def classify_soh(soh_value: float, threshold: float = 0.6) -> str:
+    if soh_value >= threshold:
+        return "The battery is healthy"
+    else:
+        return "The battery is not healthy"
+    
+
+def aiChatBot(question: str) -> str:
+    """
+    Uses Gemini API to answer general battery-related questions.
+    """
+    try:
+        prompt = (
+            "You are a helpful chatbot in a university project about battery health. "
+            "Answer clearly and simply. The user's question is:\n\n"
+            f"{question}"
+        )
+
+        response = model.generate_content(prompt)
+        return response.text.strip()
+    except Exception as e:
+        return f"Sorry, I couldn't contact the Gemini API. Error: {e}"
+
+
+def main():
+    print("=== Battery SOH Chatbot ===")
+    print("Your linear regression model has been trained in linearReg.py.\n")
+    print("You can type:")
+    print(" - 'check battery soh' → predicts SOH for a random sample")
+    print(" - 'set threshold' → change the SOH threshold (default 0.6)")
+    print(" - any general battery question → answered by Gemini")
+    print(" - 'quit' → exit\n")
+
+    threshold = 0.6  # default threshold
+
+    while True:
+        user_input = input("You: ").strip().lower()
+
+        if user_input in ["quit", "exit"]:
+            print("Chatbot: Goodbye!")
+            break
+
+        elif user_input == "set threshold":
+            try:
+                new_th = float(input("Enter new threshold (e.g., 0.6): "))
+                threshold = new_th
+                print(f"Chatbot: Threshold updated to {threshold:.2f}.")
+            except ValueError:
+                print("Chatbot: That wasn't a valid number. Threshold unchanged.")
+
+        elif "check" in user_input and "soh" in user_input:
+            X_test = lr.X_test
+            idx = np.random.randint(0, X_test.shape[0])
+            sample = X_test[idx:idx+1]
+            pred_soh = lr.regModel.predict(sample)[0]
+
+            status = classify_soh(pred_soh, threshold)
+
+            print(f"Chatbot: Predicted SOH = {pred_soh:.3f}")
+            print(f"Chatbot: {status}")
+
+        else:
+            # Any other question → answered by Gemini
+            answer = aiChatBot(user_input)
+            print("Chatbot:", answer)
