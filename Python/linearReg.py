@@ -19,7 +19,7 @@ y_data = pp.dataset['SOH'].values
 
 #x_train and y_train are arrays used to train the model
 #x_test and y_test are arrays used to test the model
-#20% of the data for testing and 80% for training
+#10% of the data for testing and 80% for training
 X_train, X_test, y_train, y_test = train_test_split(
     x_data, y_data, test_size=0.1, random_state=1
 )
